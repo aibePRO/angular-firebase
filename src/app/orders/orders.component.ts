@@ -1,5 +1,6 @@
 import { Component, OnInit } from "@angular/core";
 //TODO: import ngform...
+import { FormBuilder, Validators } from '@angular/forms';
 import { OrdersService } from "../shared/orders.service";
 
 @Component({
@@ -8,9 +9,22 @@ import { OrdersService } from "../shared/orders.service";
   styleUrls: ["./orders.component.scss"]
 })
 export class OrdersComponent implements OnInit {
-  constructor(private ordersService: OrdersService) {}
+  
+  orderForm;
+  todook: boolean;
 
-  ngOnInit() {}
+  constructor(
+    private ordersService: OrdersService,
+    private fb: FormBuilder
+  ) {}
+
+
+  ngOnInit() {
+    this.orderForm = this.fb.group({
+      customerName: '',//['', Validators.required],
+      orderNumber: ''//['', Validators.required]
+    })
+  }
 
   coffees = [
     "Americano",
@@ -24,7 +38,7 @@ export class OrdersComponent implements OnInit {
     "Tea"
   ];
 
-  coffeeOrder = [];
+  coffeOrder = [];
 
   //TODO: add a new coffe...
   
@@ -32,11 +46,16 @@ export class OrdersComponent implements OnInit {
   //TODO: remove a coffe...
 
   onSubmit() {
-    this.ordersService.form.value.coffeeOrder = this.coffeeOrder;
-    let data = this.ordersService.form.value;
+    const data = this.orderForm.value;
 
-    this.ordersService.createCoffeeOrder(data).then(res => {
-      /*do something here....maybe clear the form or give a success message*/
-    });
+    // this.ordersService.form.value.coffeeOrder = this.coffeeOrder;
+    // let data = this.ordersService.form.value;
+
+    this.ordersService.createCoffeOrder(data)
+      .then(data => {
+        if (data) {
+          this.todook = true;
+        }
+      });
   }
 }

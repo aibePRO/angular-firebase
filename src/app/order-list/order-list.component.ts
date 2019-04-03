@@ -7,19 +7,31 @@ import { OrdersService } from "../shared/orders.service";
   styleUrls: ["./order-list.component.scss"]
 })
 export class OrderListComponent implements OnInit {
+
   constructor(private ordersService: OrdersService) {}
 
   ngOnInit() {
-    this.getCoffeeOrders();
+    this.getCoffeOrders();
   }
 
-  coffeeOrders;
+  coffeOrders;
 
-  getCoffeeOrders = () =>
+  getCoffeOrders = () => {
+    this.ordersService
+      .getCoffeOrders()
+      .subscribe(res => {
+        this.coffeOrders = res;
+      })
+  }
     //TODO
 
   //TODO: delete order
+  deleteOrder = (data) => {
+    this.ordersService.deleteCoffeOrder(data);
+  }
   
   //TODO: mark as completed
-  
+  markCompleted = (data) => {
+    this.ordersService.updateCoffeOrder(data);
+  }
 }

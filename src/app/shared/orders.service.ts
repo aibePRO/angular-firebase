@@ -1,25 +1,37 @@
 import { Injectable } from "@angular/core";
-import { FormControl, FormGroup } from "@angular/forms";
-//TODO: import firestore
+import { AngularFirestore} from '@angular/fire/firestore'
 
 @Injectable({
   providedIn: "root"
 })
 export class OrdersService {
-  constructor() {}
+
+  constructor(private afs: AngularFirestore) {}
 
   //TODO: grupo de campos formulario controlados por código
 
   //Firestore CRUD actions
-  createCoffeeOrder(data) {
+  createCoffeOrder(data): any {
+    return new Promise((resolve, reject) => {
+      this.afs.collection('coffeOrders')
+      .add(data)
+      .then(res => {}, err => {});
+    });
   }
 
-  updateCoffeeOrder(data) {
+  updateCoffeOrder(data) {
+    this.afs.collection('coffeOrders')
+      .doc(data.payload.doc.id)
+      .set({completed: true}, {merge: true})
   }
 
-  getCoffeeOrders() {
+  getCoffeOrders() {
+    return this.afs.collection('coffeOrders').snapshotChanges();
   }
 
-  deleteCoffeeOrder(data) {
+  deleteCoffeOrder(data) {
+    this.afs.collection('coffeOrders')
+      .doc(data.payload.doc.id)
+      .delete();
   }
 }

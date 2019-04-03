@@ -1,4 +1,12 @@
 <h5>Coffee Order:</h5>
-<form>
-  <!-- TODO form -->
+<form [formGroup]="orderForm" (ngSubmit)="onSubmit()" [hidden]=todook>
+    <p>
+      <input type="text" formControlName="customerName" placeholder="Customer Name">
+    </p>
+    <p>
+        <input type="text" formControlName="orderNumber" placeholder="Order Number">
+    </p>
+    <p>
+        <input type="submit" value="Save">
+    </p>
 </form>
